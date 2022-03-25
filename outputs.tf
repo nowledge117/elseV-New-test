@@ -1,0 +1,154 @@
+##------------------------------------------------------------------------------
+## Website S3 Bucket
+###------------------------------------------------------------------------------
+output "website_bucket_id" {
+  description = "The name of the bucket."
+  value       = aws_s3_bucket.website.id
+}
+
+output "website_bucket_arn" {
+  description = "The ARN of the bucket. Will be of format arn:aws:s3:::bucketname."
+  value       = aws_s3_bucket.website.arn
+}
+
+output "website_bucket_domain_name" {
+  description = "The bucket domain name. Will be of format bucketname.s3.amazonaws.com."
+  value       = aws_s3_bucket.website.bucket_domain_name
+}
+
+output "website_bucket_regional_domain_name" {
+  description = "The bucket region-specific domain name. The bucket domain name including the region name, please refer to https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region for format. Note: The AWS CloudFront allows specifying S3 region-specific endpoints when creating S3 origin, it will prevent redirect issues from CloudFront to S3 Origin URL."
+  value       = aws_s3_bucket.website.bucket_regional_domain_name
+}
+
+output "website_bucket_hosted_zone_id" {
+  description = "The Route 53 Hosted Zone ID for this bucket's region."
+  value       = aws_s3_bucket.website.hosted_zone_id
+}
+
+output "website_bucket_region" {
+  description = "The AWS region this bucket resides in."
+  value       = aws_s3_bucket.website.region
+}
+
+output "website_bucket_tags_all" {
+  description = "A map of tags assigned to the resource, including those inherited from the provider default_tags configuration block."
+  value       = aws_s3_bucket.website.tags_all
+}
+
+output "website_bucket_website_endpoint" {
+  description = "The website endpoint, if the bucket is configured with a website. If not, this will be an empty string."
+  value       = aws_s3_bucket.website.website_endpoint
+}
+
+output "website_bucket_website_domain" {
+  description = "The domain of the website endpoint, if the bucket is configured with a website. If not, this will be an empty string. This is used to create Route 53 alias records."
+  value       = aws_s3_bucket.website.website_domain
+}
+
+#------------------------------------------------------------------------------
+# Cloudfront for S3 Bucket Website
+#------------------------------------------------------------------------------
+output "cloudfront_website_id" {
+  description = "The identifier for the distribution. For example: EDFDVBD632BHDS5."
+  value       = aws_cloudfront_distribution.website.id
+}
+
+output "cloudfront_website_arn" {
+  description = "The ARN (Amazon Resource Name) for the distribution. For example: arn:aws:cloudfront::123456789012:distribution/EDFDVBD632BHDS5, where 123456789012 is your AWS account ID."
+  value       = aws_cloudfront_distribution.website.arn
+}
+
+output "cloudfront_website_caller_reference" {
+  description = "Internal value used by CloudFront to allow future updates to the distribution configuration."
+  value       = aws_cloudfront_distribution.website.caller_reference
+}
+
+output "cloudfront_website_status" {
+  description = "The current status of the distribution. Deployed if the distribution's information is fully propagated throughout the Amazon CloudFront system."
+  value       = aws_cloudfront_distribution.website.status
+}
+
+output "cloudfront_website_tags_all" {
+  description = "A map of tags assigned to the resource, including those inherited from the provider default_tags configuration block."
+  value       = aws_cloudfront_distribution.website.tags_all
+}
+
+output "cloudfront_website_trusted_key_groups" {
+  description = "List of nested attributes for active trusted key groups, if the distribution is set up to serve private content with signed URLs"
+  value       = aws_cloudfront_distribution.website.trusted_key_groups
+}
+
+output "cloudfront_website_trusted_signers" {
+  description = "List of nested attributes for active trusted signers, if the distribution is set up to serve private content with signed URLs"
+  value       = aws_cloudfront_distribution.website.trusted_signers
+}
+
+output "cloudfront_website_domain_name" {
+  description = "The domain name corresponding to the distribution. For example: d604721fxaaqy9.cloudfront.net."
+  value       = aws_cloudfront_distribution.website.domain_name
+}
+
+output "cloudfront_website_last_modified_time" {
+  description = "The date and time the distribution was last modified."
+  value       = aws_cloudfront_distribution.website.last_modified_time
+}
+
+output "cloudfront_website_in_progress_validation_batches" {
+  description = "The number of invalidation batches currently in progress."
+  value       = aws_cloudfront_distribution.website.in_progress_validation_batches
+}
+
+output "cloudfront_website_etag" {
+  description = "The current version of the distribution's information. For example: E2QWRUHAPOMQZL."
+  value       = aws_cloudfront_distribution.website.etag
+}
+
+output "cloudfront_website_hosted_zone_id" {
+  description = "The CloudFront Route 53 zone ID that can be used to route an Alias Resource Record Set to. This attribute is simply an alias for the zone ID Z2FDTNDATAQYW2."
+  value       = aws_cloudfront_distribution.website.hosted_zone_id
+}
+
+#------------------------------------------------------------------------------
+# Route53 Hosted Zone
+#------------------------------------------------------------------------------
+output "hosted_zone_id" {
+  description = "The Hosted Zone ID. This can be referenced by zone records."
+  value       = var.create_route53_hosted_zone ? aws_route53_zone.hosted_zone[0].zone_id : var.route53_hosted_zone_id
+}
+
+output "hosted_zone_name_servers" {
+  description = "A list of name servers in the associated (or default) delegation set. Find more about delegation sets in AWS docs."
+  value       = var.create_route53_hosted_zone ? aws_route53_zone.hosted_zone[0].name_servers : []
+}
+
+output "hosted_zone_tags_all" {
+  description = "A map of tags assigned to the resource, including those inherited from the provider default_tags configuration block."
+  value       = var.create_route53_hosted_zone ? aws_route53_zone.hosted_zone[0].tags_all : {}
+}
+
+output "route_53_record_website_name" {
+  description = "The name of the record."
+  value       = aws_route53_record.website_cloudfront_record.name
+}
+
+output "route_53_record_website_fqdn" {
+  description = "FQDN built using the zone domain and name."
+  value       = aws_route53_record.website_cloudfront_record.fqdn
+}
+
+output "route_53_record_www_website_name" {
+  description = "The name of the record."
+  value       = aws_route53_record.www_website_record.name
+}
+
+output "route_53_record_www_website_fqdn" {
+  description = "FQDN built using the zone domain and name."
+  value       = aws_route53_record.www_website_record.fqdn
+}
+
+output "acm_certificate_arn" {
+  description = "The ARN of the certificate"
+  value       =  aws_acm_certificate_validation.cert_validation.certificate_arn
+}
+
